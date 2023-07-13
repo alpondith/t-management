@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class OtpMail extends Mailable
+class TaskMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,11 +16,11 @@ class OtpMail extends Mailable
      * @return void
      */
 
-    private $otp;
+    private $message;
 
-    public function __construct($otp)
+    public function __construct($m)
     {
-        $this->otp = $otp;
+        $this->message = $m;
     }
 
     /**
@@ -30,7 +30,7 @@ class OtpMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.otp-mail', ['otp' => $this->otp])
-            ->subject('Password Reset OTP From X Company');
+        return $this->view('mail.task-mail', ['message' => $this->message])
+            ->subject('Task Created');
     }
 }

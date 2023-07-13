@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
 use App\Http\Resources\TaskResource;
+use App\Jobs\SendEmailOnTaskCreate;
 use App\Models\Task;
 
 class TaskController extends Controller
@@ -25,6 +26,7 @@ class TaskController extends Controller
     {
         $data = $taskRequest->validated();
         $task = Task::create($data);
+        SendEmailOnTaskCreate::dispatch(auth()->user()->email, "Task has been created successfully");
         return TaskResource::make($task);
     }
 
