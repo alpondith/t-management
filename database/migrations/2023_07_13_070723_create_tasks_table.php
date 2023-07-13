@@ -23,7 +23,7 @@ return new class extends Migration
                 ->onUpdate('cascade');
 
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->dateTime('deadline')->nullable();
 
             $table->timestamps();
