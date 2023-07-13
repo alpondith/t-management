@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TaskResource extends JsonResource
+class AssigneeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,16 +14,11 @@ class TaskResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $data = $this->resource->only([
+
+        return $this->resource->only([
             'id',
+            'task_id',
             'user_id',
-            'title',
-            'description',
-            'deadline',
         ]);
-
-        $data['assignee_count'] = $this->resource->assignees->count();
-
-        return $data;
     }
 }
