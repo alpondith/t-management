@@ -11,12 +11,13 @@ class TaskController extends Controller
 
     public function index()
     {
-        $tasks = Task::paginate(10);
+        $tasks = Task::where('user_id', auth()->id())->paginate(10);
         return TaskResource::collection($tasks);
     }
 
     public function show(Task $task)
     {
+        abort_if($task->user_id != auth()->id(), 403, 'You are unauthorized to view this task');
         return TaskResource::make($task);
     }
 
@@ -29,6 +30,7 @@ class TaskController extends Controller
 
     public function update(TaskRequest $taskRequest, Task $task)
     {
+        abort_if($task->user_id != auth()->id(), 403, 'You are unauthorized to update this task');
         $data = $taskRequest->validated();
         $task->update($data);
         $task->refresh();
@@ -37,7 +39,7 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        // abort_if(logic), 403, 'Unauthorized');
+        abort_if($task->user_id != auth()->id(), 403, 'You are unauthorized to delete this task');
         $task->delete();
         return response()->json(['message' => 'Task deleted successfully']);
     }
